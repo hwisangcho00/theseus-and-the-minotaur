@@ -36,11 +36,28 @@ impl Display for BoardError {
 impl Error for BoardError {}
 
 #[derive(Clone)]
+pub enum BoardTile {
+    Wall,
+    Empty,
+    Theseus,
+    Minotaur,
+    Goal,
+}
+
+#[derive(Clone)]
 pub struct Grid {
-    // TODO: Implement the Grid struct
+    width: usize,
+    height: usize,
+    grid: Vec<Vec<BoardTile>>,
 }
 impl Grid {
-    // TODO: Implement the Grid struct
+    pub fn new(width: usize, height: usize, grid: Vec<Vec<BoardTile>>) -> Self {
+        Self {
+            width,
+            height,
+            grid,
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -52,8 +69,11 @@ pub struct Game {
 impl Game {
     // TODO: replace the function body with your implementation
     pub fn from_board(board: &str) -> Result<Game, BoardError> {
+
+        
+
         return Ok(Game {
-            grid: Grid {},
+            grid: Grid::new(width, height, grid),
         });
     }
 
