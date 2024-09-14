@@ -46,15 +46,11 @@ pub enum BoardTile {
 
 #[derive(Clone)]
 pub struct Grid {
-    width: usize,
-    height: usize,
     grid: Vec<Vec<BoardTile>>,
 }
 impl Grid {
-    pub fn new(width: usize, height: usize, grid: Vec<Vec<BoardTile>>) -> Self {
+    pub fn new(grid: Vec<Vec<BoardTile>>) -> Self {
         Self {
-            width,
-            height,
             grid,
         }
     }
@@ -69,11 +65,30 @@ pub struct Game {
 impl Game {
     // TODO: replace the function body with your implementation
     pub fn from_board(board: &str) -> Result<Game, BoardError> {
-
+        let mut grid = Vec::new();
         
 
+        for line in board.lines() {
+            
+            let mut row = Vec::new();
+
+            for c in line.chars() {
+                match c {
+                    ' ' => {row.push(BoardTile::Empty)}
+                    'X' => {row.push(BoardTile::Wall)}
+                    'M' => {row.push(BoardTile::Minotaur)}
+                    'T' => {row.push(BoardTile::Theseus)}
+                    'G' => {row.push(BoardTile::Goal)}
+                    c => {return Err(BoardError::InvalidCharacter(c))}
+                }
+            }
+
+            grid.push(row);
+        }
+
+
         return Ok(Game {
-            grid: Grid::new(width, height, grid),
+            grid: Grid::new(grid),
         });
     }
 
@@ -96,30 +111,76 @@ impl Game {
 }
 
 impl Game {
-    // TODO: replace the function body with your implementation
+
+    fn return_boardtile(&self, row: usize, col: usize) -> Option<BoardTile> {
+        match self.grid.grid.get(row) {
+            Some(r) =>
+                match r.get(col) {
+                    Some(c) => Some(c.clone()),
+                    None => None
+                },
+            None => None
+        }
+    }
+
     /// Returns true if the given position is Theseus
     pub fn is_theseus(&self, row: usize, col: usize) -> bool {
-        false
+        match self.return_boardtile(row, col) {
+            Some(c) =>
+                match c {
+                    BoardTile::Theseus => true,
+                    _ => false,
+                },
+            None => false
+        }
     }
     // TODO: replace the function body with your implementation
     /// Returns true if the given position is Minotaur
     pub fn is_minotaur(&self, row: usize, col: usize) -> bool {
-        false
+        match self.return_boardtile(row, col) {
+            Some(c) =>
+                match c {
+                    BoardTile::Minotaur => true,
+                    _ => false,
+                },
+            None => false
+        }
     }
     // TODO: replace the function body with your implementation
     /// Returns true if the given position is a wall
     pub fn is_wall(&self, row: usize, col: usize) -> bool {
-        false
+        match self.return_boardtile(row, col) {
+            Some(c) =>
+                match c {
+                    BoardTile::Wall => true,
+                    _ => false,
+                },
+            None => false
+        }
     }
     // TODO: replace the function body with your implementation
     /// Returns true if the given position is the goal
     pub fn is_goal(&self, row: usize, col: usize) -> bool {
-        false
+        match self.return_boardtile(row, col) {
+            Some(c) =>
+                match c {
+                    BoardTile::Goal => true,
+                    _ => false,
+                },
+            None => false
+        }
     }
     // TODO: replace the function body with your implementation
     /// Returns true if the given position is empty
     pub fn is_empty(&self, row: usize, col: usize) -> bool {
-        false
+        match self.return_boardtile(row, col) {
+            Some(c) =>
+                match c {
+                    BoardTile::Empty => true,
+                    _ => false,
+                },
+            None => false
+        }
     }
 }
 
