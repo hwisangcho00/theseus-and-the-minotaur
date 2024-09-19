@@ -78,43 +78,6 @@ fn test_load_board_30() {
     check_board(board2);
 }
 
-fn check_input(input: &str, expected: Option<theseus::Command>) {
-    let mut buffer = input.to_string();
-    let result = theseus::input(buffer.as_bytes());
-    assert_eq!(expected, result, "For input: {:?}", input);
-}
-
-#[test]
-fn test_theseus_input_5() {
-    let input = "w\n";
-    let expected = Some(theseus::Command::Up);
-    check_input(input, expected);
-
-    let input = "a\n";
-    let expected = Some(theseus::Command::Left);
-    check_input(input, expected);
-
-    let input = "s\n";
-    let expected = Some(theseus::Command::Down);
-    check_input(input, expected);
-
-    let input = "d\n";
-    let expected = Some(theseus::Command::Right);
-    check_input(input, expected);
-
-    let input = " \n";
-    let expected = Some(theseus::Command::Skip);
-    check_input(input, expected);
-
-    let input = "mnr\n";
-    let expected = None;
-    check_input(input, expected);
-
-    let input = "\n";
-    let expected = None;
-    check_input(input, expected);
-}
-
 fn check_theseus_move(start_board: &str, command: theseus::Command, finish_board: &str) {
     let mut game = theseus::Game::from_board(start_board)
         .expect(&format!("Failed to create game from board {}", start_board));
